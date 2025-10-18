@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map Project Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Atlante prêt-à-porter</h1>
+      <p>Generatore di configurazione</p>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-step active">0. Scelta</div>
+      <div class="progress-step">1. Info Base</div>
+      <div class="progress-step">2. Dati</div>
+      <div class="progress-step">3. Immagini</div>
+      <div class="progress-step">4. Mappa</div>
+      <div class="progress-step">5. Filtri</div>
+      <div class="progress-step">6. Riferimenti</div>
+      <div class="progress-step">7. Download</div>
+    </div>
+    <div class="content">
+      <!-- STEP 0: Scelta iniziale -->
+      <div class="step active" id="step0">
+        <h2>Benvenuto!</h2>
+        <p class="description">Scegli come vuoi iniziare</p>
+        
+        <div class="choice-container">
+          <div class="choice-card" onclick="window.uiManager.startFromScratch()">
+            <div class="choice-icon">🆕</div>
+            <h3>Inizia da Zero</h3>
+            <p>Crea un nuovo progetto compilando tutti i campi passo per passo</p>
+            <button class="btn-choice">Inizia Nuovo Progetto</button>
+          </div>
+          
+          <div class="choice-card" onclick="document.getElementById('loadZipFile').click()">
+            <div class="choice-icon">📦</div>
+            <h3>Carica ZIP Esistente</h3>
+            <p>Modifica un progetto già creato caricando il file ZIP</p>
+            <button class="btn-choice">Carica ZIP</button>
+            <input type="file" id="loadZipFile" accept=".zip" style="display: none;" onchange="window.loadExistingZip(this.files[0])" />
+          </div>
+        </div>
+        
+        <!-- <div id="loadingZip" class="loading-overlay">
+          <div class="spinner"></div>
+          <p>Caricamento ZIP in corso...</p>
+        </div> -->
+      </div>
+
+      <!-- STEP 1: Info Base -->
+      <div class="step" id="step1">
+        <h2>Informazioni di Base</h2>
+        <p class="description">Iniziamo con le informazioni essenziali del tuo progetto</p>
+        <div class="alert alert-info"><strong>📝 Campi obbligatori</strong><p>Tutti i campi in questo step sono necessari</p></div>
+        <div class="form-group">
+          <label class="required">Titolo breve del progetto</label>
+          <input type="text" id="shortTitle" placeholder="es. HistoricSites" />
+          <div class="help-text">Nome breve senza spazi (consigliato: acronimo)</div>
+        </div>
+        <div class="form-group">
+          <label class="required">Titolo completo del progetto</label>
+          <input type="text" id="projectTitle" placeholder="es. Siti Storici di Roma" />
+        </div>
+        <div class="form-group">
+          <label class="required">Sottotitolo</label>
+          <input type="text" id="projectSubtitle" placeholder="es. Un Catalogo Interattivo" />
+        </div>
+        <div class="form-group">
+          <label class="required">Descrizione del progetto</label>
+          <textarea id="projectDescription" placeholder="Descrizione dettagliata..." rows="4"></textarea>
+        </div>
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.goToStep(0)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(1)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Dati -->
+      <div class="step" id="step2">
+        <h2>Carica i File Dati</h2>
+        <p class="description">Carica i file TSV con i tuoi dati</p>
+        
+        <!-- Updated Info Alert -->
+        <div class="alert alert-info">
+          <strong>📋 Requisiti file TSV</strong>
+          <p style="margin: 10px 0 5px 0;"><strong>locations.tsv</strong> deve contenere:</p>
+          <ul style="margin: 5px 0 10px 20px; padding: 0;">
+            <li><code>Location</code> - Nome della località</li>
+            <li><code>lat_long</code> - Coordinate geografiche</li>
+          </ul>
+          <p style="margin: 10px 0 5px 0;"><strong>references.tsv</strong> deve contenere:</p>
+          <ul style="margin: 5px 0 10px 20px; padding: 0;">
+            <li><code>pivot_ID</code> - Identificatore univoco</li>
+          </ul>
+          <p style="margin: 10px 0 0 0;"><strong>⚠️ Importante:</strong> I due file devono avere <strong>almeno una colonna in comune</strong> per poter essere collegati (es: entrambi hanno la colonna "Location")</p>
+        </div>
+
+        <div class="form-group">
+          <label class="required">locations.tsv</label>
+          <div class="file-upload" id="locationsUpload" onclick="document.getElementById('locationsFile').click()">
+            <div class="file-icon">📍</div>
+            <div>Clicca per caricare</div>
+            <div class="file-info" id="locationsInfo"></div>
+            <input type="file" id="locationsFile" accept=".tsv" onchange="window.handleFileUpload('locations', this.files[0])" />
+          </div>
+          <div id="locationsPreview" class="tsv-preview"></div>
+        </div>
+        
+        <div class="form-group">
+          <label class="required">references.tsv</label>
+          <div class="file-upload" id="referencesUpload" onclick="document.getElementById('referencesFile').click()">
+            <div class="file-icon">📚</div>
+            <div>Clicca per caricare</div>
+            <div class="file-info" id="referencesInfo"></div>
+            <input type="file" id="referencesFile" accept=".tsv" onchange="window.handleFileUpload('references', this.files[0])" />
+          </div>
+          <div id="referencesPreview" class="tsv-preview"></div>
+          
+          <!-- Multivalue Separators Configuration -->
+          <div id="multivalueSeparators" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+            <h3 style="margin: 0 0 10px 0; color: #495057; font-size: 18px;">
+              📋 Separatori Multi-Valore (Opzionale)
+            </h3>
+            <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 14px;">
+              Configura i separatori che hai usato nei tuoi dati e che contengono valori multipli nella stessa cella (es: "Arte, Storia" o "Tag1; Tag2").
+            </p>
+            
+            <datalist id="columnSuggestions"></datalist>
+            
+            <div id="separatorsList" style="margin-bottom: 15px;">
+              <!-- Separator rows will be added here -->
+            </div>
+            
+            <button type="button" 
+                    onclick="window.uiManager.addSeparatorRow()" 
+                    style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              + Aggiungi Separatore
+            </button>
+            
+            <div style="margin-top: 15px; padding: 12px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; font-size: 13px; color: #856404;">
+              <strong>💡 Esempio:</strong> Se la colonna "Type" contiene "Arte, Storia", inserisci "Type" come nome colonna e ", " (virgola e spazio). <br>
+              Separatori consigliati: <code>, ; | @</code>. Il simbolo <code>&gt;</code> non può essere usato come separatore generico poiché già in uso come delimitatore delle tassonomie.
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(2)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(2)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Immagini -->
+      <div class="step" id="step3">
+        <h2>Carica le Immagini</h2>
+        <div class="form-group">
+          <label class="required">Logo principale</label>
+          <div class="file-upload" id="logoUpload" onclick="document.getElementById('logoFile').click()">
+            <div class="file-icon">🎨</div>
+            <div>Clicca per caricare</div>
+            <div class="file-info" id="logoInfo"></div>
+            <input type="file" id="logoFile" accept=".png,.jpg,.jpeg,.svg" onchange="window.handleFileUpload('logo', this.files[0])" />
+          </div>
+        </div>
+        <div class="optional-section">
+          <div class="optional-header">
+            <input type="checkbox" id="enableInstitutional" onchange="window.uiManager.toggleOptional('institutional')" />
+            <label for="enableInstitutional">Loghi istituzionali (opzionale)</label>
+          </div>
+          <div class="optional-content" id="institutionalContent">
+            <div class="file-upload" onclick="document.getElementById('institutionalFiles').click()">
+              <div class="file-icon">🏛️</div>
+              <div>Clicca per caricare</div>
+              <div class="file-info" id="institutionalInfo"></div>
+              <input type="file" id="institutionalFiles" accept=".png,.jpg,.jpeg,.svg" multiple onchange="window.uiManager.handleMultipleFiles('institutional', this.files)" />
+            </div>
+            <div class="file-list" id="institutionalList"></div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(3)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(3)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Map Configuration -->
+      <div class="step" id="step4">
+        <h2>🗺️ Configurazione Mappa</h2>
+        
+        <div class="form-group">
+          <label for="latitude">Latitudine Iniziale</label>
+          <input type="number" id="latitude" step="any" value="41.8719" required>
+        </div>
+
+        <div class="form-group">
+          <label for="longitude">Longitudine Iniziale</label>
+          <input type="number" id="longitude" step="any" value="12.5674" required>
+        </div>
+
+        <div class="form-group">
+          <label for="zoom">Zoom Iniziale (1-18)</label>
+          <input type="number" id="zoom" min="1" max="18" value="6" required>
+        </div>
+
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #dee2e6;">
+
+        <h3 style="margin-bottom: 20px; color: #495057;">Livelli Mappa (Tile Layers)</h3>
+        
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; border: 1px solid #b3d9ff; margin-bottom: 20px;">
+          <p style="margin: 0; font-size: 14px; color: #004085;">
+            <strong>✓ Default (OpenStreetMap)</strong> - Sempre incluso
+          </p>
+        </div>
+
+        <!-- Terrain Option -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 15px;">
+          <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 10px;">
+            <input type="checkbox" id="enableTerrain" style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+            <strong style="font-size: 16px;">Terrain (OpenTopoMap)</strong>
+          </label>
+          <p style="margin: 10px 0 0 28px; font-size: 14px; color: #6c757d;">
+            Mappa topografica con rilievi e altitudini.
+            <a href="https://opentopomap.org" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">
+              🔗 Anteprima mappa
+            </a>
+          </p>
+        </div>
+
+        <!-- CartoDB Option -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 15px;">
+          <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 10px;">
+            <input type="checkbox" id="enableCartoDB" style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+            <strong style="font-size: 16px;">CartoDB Positron</strong>
+          </label>
+          <p style="margin: 10px 0 0 28px; font-size: 14px; color: #6c757d;">
+            Mappa minimalista con stile chiaro e pulito.
+            <a href="https://carto.com/basemaps/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">
+              🔗 Anteprima mappa
+            </a>
+          </p>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-secondary" onclick="window.uiManager.prevStep(4)">← Indietro</button>
+          <button type="button" class="btn-primary" onclick="window.uiManager.nextStep(4)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Filtri -->
+      <div class="step" id="step5">
+        <h2>🔍 Configurazione Filtri</h2>
+        <p class="description">I filtri agiranno sulla mappa integrata al catalogo dei riferimenti</p>
+        
+        <!-- <div class="alert alert-info">
+          <strong>📊 Colonne disponibili nei dataset</strong>
+          <p>Visualizza le colonne dei tuoi file TSV per configurare i filtri correttamente. Il badge <span style="background: #17a2b8; padding: 2px 6px; border-radius: 3px; font-size: 10px; color: white; font-weight: bold;">SHARED</span> indica la colonna condivisa tra i due dataset.</p>
+        </div> -->
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; color: #495057;">Aggiungi Filtri</h3>
+            <button type="button" 
+                    onclick="window.uiManager.addFilterRow()" 
+                    style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              + Aggiungi Filtro
+            </button>
+          </div>
+
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border: 1px solid #ffc107; margin-bottom: 20px;">
+          <p style="margin: 0; font-size: 14px; color: #856404;">
+            <strong>💡 Tipi di filtro:</strong><br>
+            • <strong>Simple:</strong> Filtro a checkbox per valori multipli<br>
+            • <strong>Taxonomy:</strong> Filtro gerarchico per tassonomie (usa ">" come separatore nei dati)<br>
+            • <strong>Range:</strong> Filtro per intervalli numerici (es. anni)
+          </p>
+        </div>
+
+        <datalist id="filterColumnSuggestions"></datalist>
+
+        <div id="filtersList" style="margin-bottom: 20px;">
+          <!-- Filter rows will be added here -->
+        </div>
+
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(5)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(5)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 6: References Configuration -->
+      <div class="step" id="step6">
+        <h2>📚 Configurazione Riferimenti</h2>
+        <p class="description">Configura come i riferimenti vengono visualizzati e ordinati nel catalogo</p>
+        
+        <div class="alert alert-info">
+          <strong>📊 Colonne disponibili nei dataset</strong>
+          <p>Verifica le colonne dei tuoi dataset per configurare correttamente. Il badge <span style="background: #17a2b8; padding: 2px 6px; border-radius: 3px; font-size: 10px; color: white; font-weight: bold;">SHARED</span> indica la colonna condivisa.</p>
+        </div>
+
+        <!-- Dataset Previews -->
+        <div id="datasetsPreviewRefs"></div>
+
+        <!-- Result Cards Configuration -->
+        <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+          <h3 style="margin: 0 0 15px 0; color: #495057;">📇 Campi delle Card Risultati</h3>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6c757d;">Definisci quali campi mostrare nelle card dei risultati</p>
+          
+          <div style="background: #e7f3ff; padding: 12px; border-radius: 6px; border: 1px solid #b3d9ff; margin-bottom: 15px;">
+            <strong style="color: #004085;">📚 Da References.tsv:</strong>
+          </div>
+          
+          <div class="form-group">
+            <label>
+              Titolo Card <span style="color: #dc3545; font-weight: bold;">*</span>
+            </label>
+            <select id="cardTitle" required style="padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; width: 100%; background: white;">
+              <option value="">-- Seleziona una colonna --</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Sottotitolo Card</label>
+            <select id="cardSubtitle" style="padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; width: 100%; background: white;">
+              <option value="">-- Seleziona una colonna --</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Sottotitolo 2 Card</label>
+            <select id="cardSubtitle2" style="padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; width: 100%; background: white;">
+              <option value="">-- Seleziona una colonna --</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Descrizione Card</label>
+            <select id="cardDescription" style="padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; width: 100%; background: white;">
+              <option value="">-- Seleziona una colonna --</option>
+            </select>
+          </div>
+          
+          <div style="background: #e7f3ff; padding: 12px; border-radius: 6px; border: 1px solid #b3d9ff; margin: 20px 0 15px 0;">
+            <strong style="color: #004085;">📍 Da Locations.tsv:</strong>
+          </div>
+          
+          <div class="form-group">
+            <label>Descrizione Popup</label>
+            <select id="popupDescription" style="padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; width: 100%; background: white;">
+              <option value="">-- Seleziona una colonna --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sortings -->
+        <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+              <h3 style="margin: 0; color: #495057;">
+                🔄 Definizioni Ordinamento 
+                <span style="color: #dc3545; font-weight: bold;">* (almeno 1)</span>
+              </h3>
+              <p style="margin: 5px 0 0 0; font-size: 12px; color: #6c757d;">Il radio indica l'ordinamento di default (primo per default)</p>
+            </div>
+            <button type="button" onclick="window.uiManager.addSortingRow()" style="padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">+ Aggiungi</button>
+          </div>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6c757d;">📚 Ordinamenti da References.tsv (il codice verrà generato automaticamente, es. titolo_asc)</p>
+          <div id="sortingsList"></div>
+        </div>
+
+        <!-- Modal Information -->
+        <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+          <h3 style="margin: 0 0 15px 0; color: #495057;">ℹ️ Informazioni Modal</h3>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6c757d;">Campi mostrati nel dettaglio del riferimento (modifica le label o rimuovi quelli non necessari)</p>
+          
+          <div style="background: #e7f3ff; padding: 12px; border-radius: 6px; border: 1px solid #b3d9ff; margin-bottom: 10px;">
+            <strong style="color: #004085;">
+              📚 Da References.tsv 
+              <span style="color: #dc3545; font-weight: bold;">* (almeno 1 campo)</span>
+            </strong>
+          </div>
+          <div id="modalInfoListRefs"></div>
+          
+          <div style="background: #e7f3ff; padding: 12px; border-radius: 6px; border: 1px solid #b3d9ff; margin: 20px 0 10px 0;">
+            <strong style="color: #004085;">
+              📍 Da Locations.tsv 
+              <span style="color: #dc3545; font-weight: bold;">* (almeno 1 campo)</span>
+            </strong>
+          </div>
+          <div id="modalInfoListLocs"></div>
+        </div>
+
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; border: 1px solid #bee5eb; margin-bottom: 20px;">
+          <p style="margin: 0; font-size: 14px; color: #0c5460;">
+            <strong>ℹ️ Info automatiche:</strong><br>
+            • <strong>Ordinamento default:</strong> Selezionato tramite radio button (primo per default)<br>
+            • <strong>Tags da mostrare:</strong> Verranno aggiunti automaticamente i campi degli ordinamenti<br>
+            • <strong>Campi ricercabili:</strong> Verranno usati automaticamente Titolo Card, Sottotitolo e Sottotitolo 2<br>
+            • <strong>Modal Information:</strong> Tutti i campi sono precaricati, modifica le label o rimuovi quelli non necessari
+          </p>
+        </div>
+
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(6)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(6)">Avanti →</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: Download -->
+      <div class="step" id="step7">
+        <h2>Riepilogo e Download</h2>
+        
+        <div class="summary-section">
+          <h3>📋 Informazioni Progetto</h3>
+          <div class="summary-item">
+            <div class="summary-label">Titolo breve:</div>
+            <div class="summary-value" id="sum-shortTitle"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Titolo completo:</div>
+            <div class="summary-value" id="sum-projectTitle"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Coordinate:</div>
+            <div class="summary-value" id="sum-coords"></div>
+          </div>
+        </div>
+        
+        <div class="summary-section">
+          <h3>📁 File Caricati</h3>
+          <div class="summary-item">
+            <div class="summary-label">Locations:</div>
+            <div class="summary-value" id="sum-locations"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">References:</div>
+            <div class="summary-value" id="sum-references"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Logo:</div>
+            <div class="summary-value" id="sum-logo"></div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Istituzionali:</div>
+            <div class="summary-value" id="sum-institutional"></div>
+          </div>
+        </div>
+        
+        <div class="alert alert-success">
+          <strong>✅ Tutto pronto!</strong> Clicca sul pulsante per scaricare il tuo progetto.
+        </div>
+        
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(7)">← Indietro</button>
+          <button class="btn-success" id="downloadZip">🎉 Scarica ZIP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
+  <script>
+    // Initialize previews when entering steps
+    document.addEventListener('DOMContentLoaded', () => {
+      const step5 = document.getElementById('step5');
+      const step6 = document.getElementById('step6');
+      
+      const observer5 = new MutationObserver(() => {
+        if (step5.classList.contains('active')) {
+          if (window.uiManager && window.uiManager.showDatasetPreviews) {
+            window.uiManager.showDatasetPreviews();
+          }
+        }
+      });
+      observer5.observe(step5, { attributes: true, attributeFilter: ['class'] });
+      
+      const observer6 = new MutationObserver(() => {
+        if (step6.classList.contains('active')) {
+          // Wait a bit to ensure data is loaded
+          setTimeout(() => {
+            if (window.uiManager) {
+              // Show previews for step 6
+              if (window.uiManager.showDatasetPreviews) {
+                window.uiManager.showDatasetPreviews().then(() => {
+                  const datasetsPreview = document.getElementById('datasetsPreview');
+                  const previewContainer = document.getElementById('datasetsPreviewRefs');
+                  if (datasetsPreview && previewContainer) {
+                    previewContainer.innerHTML = datasetsPreview.innerHTML;
+                  }
+                }).catch(err => console.error('Error showing previews:', err));
+              }
+              
+              // Populate result cards fields
+              if (window.uiManager.populateResultCardsFields) {
+                window.uiManager.populateResultCardsFields();
+              }
+            }
+          }, 100);
+        }
+      });
+      observer6.observe(step6, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</body>
+</html>
