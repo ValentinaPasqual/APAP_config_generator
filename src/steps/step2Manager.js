@@ -176,9 +176,9 @@ export async function showTSVPreview(type, file, skipRerender = false) {
     
     validationHTML += '</div>';
 
-    let tableHTML = '<div class="table-scroll" style="overflow-x: auto; max-width: 100%; border: 1px solid #dee2e6; border-radius: 8px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">';
-    tableHTML += '<table class="preview-table" style="width: 100%; border-collapse: collapse; margin: 0;">';
-    tableHTML += '<thead><tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">';
+    let tableHTML = '<div class="table-scroll">';
+    tableHTML += '<table class="preview-table">';
+    tableHTML += '<thead><tr>';
     
     const requiredCols = type === 'locations' ? ['Location', 'lat_long'] : ['pivot_ID'];
     const sharedCol = projectData.sharedColumn;

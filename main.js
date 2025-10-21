@@ -10,7 +10,9 @@ import {
   populateResultCardsFields 
 } from "./src/steps/step6Manager.js";
 import { loadExistingZip } from "./src/zipLoader.js";
-import { generateZip } from "./src/zipBuilder.js";
+// import { generateZip } from "./src/zipBuilder.js";
+import './src/Fonts.js';
+import './styles.css';
 
 // Unified file upload handler
 function handleFileUpload(type, file) {
@@ -38,5 +40,5 @@ window.uiManager = {
 };
 
 window.loadExistingZip = loadExistingZip;
-window.generateZip = generateZip;
+// window.generateZip = generateZip;
 window.handleFileUpload = handleFileUpload;

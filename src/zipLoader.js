@@ -132,6 +132,17 @@ export async function loadExistingZip(file) {
       console.log('ℹ️ Nessun file istituzionale trovato');
     }
 
+    // 6️⃣ CARICA tailwind.config.js
+    const tailwindEntry = entries.find(e => e.filename === 'tailwind.config.js');
+    if (tailwindEntry) {
+      const blob = await tailwindEntry.getData(new BlobWriter());
+      const tailwindFile = new File([blob], 'tailwind.config.js', { type: 'text/javascript' });
+      setFile('tailwind', tailwindFile);
+      console.log('✅ tailwind.config.js caricato');
+    } else {
+      console.warn('⚠️ tailwind.config.js non trovato');
+    }
+
     await zipReader.close();
     
     if (loadingEl) loadingEl.classList.remove('active');

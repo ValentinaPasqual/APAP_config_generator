@@ -5,7 +5,8 @@ import { validateStep3, populateStep3Form } from './steps/step3Manager.js';
 import { validateStep4, populateStep4Form } from './steps/step4Manager.js';
 import { validateStep5, populateStep5Form } from './steps/step5Manager.js';
 import { validateStep6, populateStep6Form } from './steps/step6Manager.js';
-import { validateStep7, updateSummary, initializeDownloadButton } from './steps/step7Manager.js';
+import { validateStep7, populateStep7Form, initializeStep7 } from './steps/step7Manager.js';
+import { validateStep8, updateSummary, initializeDownloadButton } from './steps/step8Manager.js';
 import { projectData } from './dataStore.js';
 
 export function startFromScratch() {
@@ -52,7 +53,7 @@ export function nextStep(from) {
   }, 0);
 
   // Quando arriviamo allo step 7 (riepilogo), aggiorna il summary e inizializza il download
-  if (current === 7) {
+  if (current === 8) {
     updateSummary();
     initializeDownloadButton();
   }
@@ -109,6 +110,12 @@ function populateCurrentStep(stepNumber) {
         populateStep6Form();
       }
       break;
+    case 7:
+      initializeStep7();
+      if (projectData.files.locations || projectData.files.references) {
+        populateStep7Form();
+      }
+      break;
     // Aggiungi qui altri step se necessario
     default:
     break;
@@ -131,6 +138,8 @@ export function validateStep(step) {
       return validateStep6();
     case 7:
       return validateStep7();
+    case 8:
+      return validateStep8();
     default:
       return true;
   }
