@@ -3,54 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Map Project Builder</title>
-  <script type="module" crossorigin src="/APAP_config_generator/assets/index-CHDSWrrD.js"></script>
-  <link rel="stylesheet" crossorigin href="/APAP_config_generator/assets/index-C3QnsvA5.css">
+  <title>Configuratore APAP template</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/APAP_config_generator/assets/apple-touch-icon-CGhZmrtp.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/APAP_config_generator/assets/favicon-32x32-CZOownmm.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/APAP_config_generator/assets/favicon-16x16-DxSIOaDD.png">
+  <link rel="manifest" href="/APAP_config_generator/assets/site-BwHFeIBa.webmanifest">
+  <script type="module" crossorigin src="/APAP_config_generator/assets/index-DhQ6uLIf.js"></script>
+  <link rel="stylesheet" crossorigin href="/APAP_config_generator/assets/index-hPKgT7sA.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
+      <img src="/APAP_config_generator/assets/logo_bright-DCMK6vTU.svg" style="max-width:10rem"/>
       <h1>Atlante prêt-à-porter</h1>
       <p>Generatore di configurazione</p>
     </div>
     <div class="progress-bar">
-      <div class="progress-step active">0. Scelta</div>
-      <div class="progress-step">1. Info Base</div>
-      <div class="progress-step">2. Dati</div>
-      <div class="progress-step">3. Immagini</div>
-      <div class="progress-step">4. Mappa</div>
-      <div class="progress-step">5. Filtri</div>
-      <div class="progress-step">6. Riferimenti</div>
-      <div class="progress-step">7. Download</div>
+      <div class="progress-step active">0. <br> Inizia</div>
+      <div class="progress-step">1. <br> Info Base</div>
+      <div class="progress-step">2. <br> Dati</div>
+      <div class="progress-step">3. <br> Immagini</div>
+      <div class="progress-step">4. <br> Mappa</div>
+      <div class="progress-step">5. <br> Filtri</div>
+      <div class="progress-step">6. <br> Riferimenti</div>
+      <div class="progress-step">7. <br> Stile</div>
+      <div class="progress-step">8. <br> Download</div>
     </div>
     <div class="content">
       <!-- STEP 0: Scelta iniziale -->
-      <div class="step active" id="step0">
-        <h2>Benvenuto!</h2>
-        <p class="description">Scegli come vuoi iniziare</p>
-        
-        <div class="choice-container">
-          <div class="choice-card" onclick="window.uiManager.startFromScratch()">
-            <div class="choice-icon">🆕</div>
-            <h3>Inizia da Zero</h3>
-            <p>Crea un nuovo progetto compilando tutti i campi passo per passo</p>
-            <button class="btn-choice">Inizia Nuovo Progetto</button>
+       <!-- Step 0: Scelta -->
+      <div class="step active" data-step="0">
+          <h2>Requisiti per configurare l'Atlante</h2>
+          <p class="description">
+              Prima di procedere con la configurazione, è necessario preparare i seguenti elementi. 
+              Solo il dataset e il logo devono essere già pronti, gli altri elementi verranno configurati nei passaggi successivi.
+          </p>
+
+          <div class="alert alert-info">
+              <strong>📋 Nota:</strong> La documentazione completa è disponibile nel repository GitHub del progetto.
+              <a href="https://github.com/ValentinaPasqual/apap_template/blob/main/README.md" target="_blank" class="doc-link">
+                  Consulta la documentazione completa →
+              </a>
           </div>
-          
-          <div class="choice-card" onclick="document.getElementById('loadZipFile').click()">
-            <div class="choice-icon">📦</div>
-            <h3>Carica ZIP Esistente</h3>
-            <p>Modifica un progetto già creato caricando il file ZIP</p>
-            <button class="btn-choice">Carica ZIP</button>
-            <input type="file" id="loadZipFile" accept=".zip" style="display: none;" onchange="window.loadExistingZip(this.files[0])" />
+
+          <div class="alert alert-info">
+              <strong>📋 Nota:</strong> I progetti che hanno usato <i>Atlante prêt-à-porter</i>:
+              <ul style="margin-left:2rem; margin-top:1rem">
+                <li style="margin-top:1rem">
+                  <p> LEDA (<i>For an Atlas of Italian Ecological Literature</i>) è il primo atlante della letteratura ecocritica italiana: uno strumento interattivo, che consente di visualizzare, interagire e ragionare sugli spazi di quei testi che hanno tematizzato in chiave critica il rapporto uomo-ambiente dagli anni 60 ad oggi.</p>
+                  <a href="https://valentinapasqual.github.io/leda" target="_blank" class="doc-link">Vai all'Atlante →</a>
+                  <a href="https://github.com/ValentinaPasqual/leda" target="_blank" class="doc-link">Vai alla Repository Github →</a>
+                </li>
+                <hr style="opacity: 30%; margin:1rem">
+                <li style="margin-top:1rem">
+                  <p>Il Progetto SASSI mappa la storia delle prime ascensioni sull'arco alpino, creando un atlante interattivo dell'alpinismo pionieristico dal XVIII al XX secolo.</p>
+                  <a href="https://valentinapasqual.github.io/sassi" target="_blank" class="doc-link">Vai all'Atlante →</a>
+                  <a href="https://github.com/ValentinaPasqual/sassi" target="_blank" class="doc-link">Vai alla Repository Github →</a>
+                </li>
+            </ul>
           </div>
-        </div>
-        
-        <!-- <div id="loadingZip" class="loading-overlay">
-          <div class="spinner"></div>
-          <p>Caricamento ZIP in corso...</p>
-        </div> -->
-      </div>
+
+          <div class="requirements-list">
+              <h3>Elementi richiesti</h3>
+              
+              <div class="requirement-item">
+                  <strong>1. Dataset <span class="badge">Obbligatorio</span></strong>
+                  <p>
+                      Il dataset deve essere composto da due file TSV collegati tramite una colonna pivot:
+                  </p>
+                  <ul style="margin: 12px 0 12px 24px; color: #495057; font-size: 14px; line-height: 1.8;">
+                      <li><code>locations.tsv</code> - dati geografici con colonne Location e lat_long</li>
+                      <li><code>references.tsv</code> - riferimenti con colonna ID e colonna pivot</li>
+                  </ul>
+                  <p>
+                      La colonna pivot condivide lo stesso nome in entrambi i file e permette di collegare i dati.
+                  </p>
+                  <a href="https://docs.google.com/spreadsheets/d/1mA20Aj3AXgXvEczFKkUf3YZ4TOLRs5TDJQMey-gEwug/copy" target="_blank" class="copy-link">
+                      📄 Copia il template del dataset
+                  </a>
+              </div>
+
+              <div class="requirement-item">
+                  <strong>2. Logo del progetto <span class="badge">Obbligatorio</span></strong>
+                  <p>
+                      File immagine in formato PNG, SVG o JPG da utilizzare nell'interfaccia del progetto.
+                      Dimensioni consigliate: 200x200px o rapporto 1:1.
+                  </p>
+              </div>
+            </div>
+
+            <div class="choice-container">
+              <div class="intro-choice-card" onclick="window.uiManager.startFromScratch()">
+                <h3>Inizia da Zero</h3>
+                <p>Crea un nuovo progetto compilando tutti i campi passo per passo</p>
+                <button class="btn-choice">Inizia Nuovo Progetto</button>
+              </div>
+              
+              <div class="intro-choice-card">
+                <h3>Carica configurazione esistente (ZIP)</h3>
+                <p>Importa un progetto già iniziato caricando un file ZIP.  
+                  Lo ZIP deve seguire la struttura indicata qui sotto.  
+                  Nessun file è obbligatorio: eventuali elementi mancanti potranno essere aggiunti nei passaggi successivi.
+                </p>
+                <div class="alert alert-info" role="alert" style="margin:1rem">
+                  <details>
+                    <summary class="mb-2" style="cursor:pointer;">Mostra struttura cartelle</summary>
+                    <pre class="mb-0"><code>
+project_bundle.zip/
+├── README.md
+└── public/
+    ├── data/
+    │   ├── locations.tsv
+    │   └── references.tsv
+    ├── imgs/
+    │   ├── project_logo.png
+    │   └── institutional_logo/
+    │       └── [file istituzionali]
+    └── config/
+    │   └── map-config.json
+    └── tailwind.config.json</code></pre>
+                  </details>
+                </div>
+
+                <div class="alert alert-info" role="alert" style="margin:1rem;">
+                  <p>💡
+                    <a download="SASSI_bundle.zip" href="./SASSI_bundle.zip" style="color: #ffc107">Scarica</a>
+                     la configurazione del progetto SASSI e importala nel configuratore per testare il funzionamento dell'applicazione                  </p>
+                </div>
+                <button class="btn-choice" onclick="document.getElementById('loadZipFile').click()">Carica ZIP</button>
+                <input type="file" id="loadZipFile" accept=".zip" style="display: none;" onchange="window.loadExistingZip(this.files[0])" />
+              </div>
+            </div>
+            </div>
 
       <!-- STEP 1: Info Base -->
       <div class="step" id="step1">
@@ -136,9 +220,8 @@
               <!-- Separator rows will be added here -->
             </div>
             
-            <button type="button" 
-                    onclick="window.uiManager.addSeparatorRow()" 
-                    style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <button type="button" class="choice-btn" 
+                    onclick="window.uiManager.addSeparatorRow()" >
               + Aggiungi Separatore
             </button>
             
@@ -408,8 +491,175 @@
         </div>
       </div>
 
-      <!-- STEP 7: Download -->
-      <div class="step" id="step7">
+      <!-- STEP 7: Colori e stile -->
+       <div class="step" id="step7">
+        <div class="step-content">
+          <h2>🎨 Personalizza il Tema</h2>
+          <p class="subtitle">Scegli i colori e i font del tuo progetto</p>
+
+          <!-- SEZIONE COLORI -->
+          <div class="section">
+            <h3>🎨 Palette Colori</h3>
+            <p class="hint">Scegli solo i 3 colori principali (700) - le altre sfumature verranno generate automaticamente</p>
+
+            <!-- COLORE PRIMARIO -->
+            <div class="form-group">
+              <label for="primaryColor">🎨 Colore Primario (Main Brand Color)</label>
+              <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                <input 
+                  type="color" 
+                  id="primaryColor" 
+                  value="#1C6F3A"
+                  style="width: 64px; height: 64px; border-radius: 8px; border: 2px solid #ddd; cursor: pointer;"
+                />
+                <input 
+                  type="text" 
+                  id="primaryColorHex"
+                  value="#1C6F3A"
+                  placeholder="#000000"
+                  style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;"
+                  onchange="document.getElementById('primaryColor').value = this.value"
+                />
+              </div>
+              
+              <!-- Palette Preview -->
+              <div id="primaryPalette" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 12px;">
+                <!-- Generato dinamicamente -->
+              </div>
+            </div>
+
+            <!-- COLORE SECONDARIO -->
+            <div class="form-group">
+              <label for="secondaryColor">🎨 Colore Secondario (Accent Color)</label>
+              <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                <input 
+                  type="color" 
+                  id="secondaryColor" 
+                  value="#C24C1C"
+                  style="width: 64px; height: 64px; border-radius: 8px; border: 2px solid #ddd; cursor: pointer;"
+                />
+                <input 
+                  type="text" 
+                  id="secondaryColorHex"
+                  value="#C24C1C"
+                  placeholder="#000000"
+                  style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;"
+                  onchange="document.getElementById('secondaryColor').value = this.value"
+                />
+              </div>
+              
+              <!-- Palette Preview -->
+              <div id="secondaryPalette" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 12px;">
+                <!-- Generato dinamicamente -->
+              </div>
+            </div>
+
+            <!-- COLORE ACCENT -->
+            <div class="form-group">
+              <label for="accentColor">🎨 Colore Accent (Highlight Color)</label>
+              <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                <input 
+                  type="color" 
+                  id="accentColor" 
+                  value="#91C682"
+                  style="width: 64px; height: 64px; border-radius: 8px; border: 2px solid #ddd; cursor: pointer;"
+                />
+                <input 
+                  type="text" 
+                  id="accentColorHex"
+                  value="#91C682"
+                  placeholder="#000000"
+                  style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;"
+                  onchange="document.getElementById('accentColor').value = this.value"
+                />
+              </div>
+              
+              <!-- Palette Preview -->
+              <div id="accentPalette" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 12px;">
+                <!-- Generato dinamicamente -->
+              </div>
+            </div>
+          </div>
+
+          <!-- SEZIONE FONT -->
+          <div class="section">
+            <h3>✍️ Tipografia</h3>
+            <p class="hint">Seleziona i font per titoli e testo corpo</p>
+
+            <!-- FONT TITOLI -->
+            <div class="form-group">
+              <label for="headingsFont">Font per Titoli (Headings)</label>
+              <select id="headingsFont" required>
+                <option value="">-- Seleziona un font --</option>
+                <!-- Popolato dinamicamente da JS -->
+              </select>
+              
+              <!-- Preview -->
+              <div 
+                id="headingsFontPreview" 
+                style="margin-top: 16px; padding: 16px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;"
+              >
+                <h2 style="font-size: 24px; font-weight: bold; margin: 0;">
+                  The quick brown fox jumps over the lazy dog
+                </h2>
+              </div>
+            </div>
+
+            <!-- FONT CORPO -->
+            <div class="form-group">
+              <label for="bodyFont">Font per Testo Corpo (Body)</label>
+              <select id="bodyFont" required>
+                <option value="">-- Seleziona un font --</option>
+                <!-- Popolato dinamicamente da JS -->
+              </select>
+              
+              <!-- Preview -->
+              <div 
+                id="bodyFontPreview" 
+                style="margin-top: 16px; padding: 16px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;"
+              >
+                <p style="font-size: 16px; margin: 0; line-height: 1.6;">
+                  The quick brown fox jumps over the lazy dog. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREVIEW COMPLETA -->
+          <div class="section">
+            <h3>👁️ Anteprima Completa</h3>
+            <p class="hint">Visualizza come apparirà il tuo tema</p>
+
+            <div 
+              id="fullThemePreview" 
+              style="border: 2px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"
+            >
+              <!-- Generato dinamicamente -->
+            </div>
+          </div>
+
+          <!-- EXPORT CONFIG (opzionale - per sviluppatori)
+          <div class="section" style="background: #f9fafb; padding: 16px; border-radius: 8px;">
+            <details>
+              <summary style="cursor: pointer; font-weight: 600; margin-bottom: 12px;">
+                📋 Configurazione Tailwind Generata (per sviluppatori)
+              </summary>
+              <pre id="tailwindConfigExport" style="background: white; padding: 12px; border-radius: 4px; font-size: 12px; overflow-x: auto; border: 1px solid #e5e7eb;">
+              </pre>
+            </details>
+          </div> -->
+
+          <!-- NAVIGATION BUTTONS -->
+        <div class="buttons">
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(7)">← Indietro</button>
+          <button class="btn-primary" onclick="window.uiManager.nextStep(7)">Avanti →</button>
+        </div>
+        </div>
+      </div>
+
+      <!-- STEP 8: Download -->
+
+      <div class="step" id="step8">
         <h2>Riepilogo e Download</h2>
         
         <div class="summary-section">
@@ -423,7 +673,7 @@
             <div class="summary-value" id="sum-projectTitle"></div>
           </div>
           <div class="summary-item">
-            <div class="summary-label">Coordinate:</div>
+            <div class="summary-label">Coordinate iniziali:</div>
             <div class="summary-value" id="sum-coords"></div>
           </div>
         </div>
@@ -448,17 +698,162 @@
           </div>
         </div>
         
+        <!-- SEZIONE ISTRUZIONI SETUP E DEPLOYMENT -->
+        <div style="margin: 30px 0;">
+          
+          <!-- Setup Iniziale -->
+          <div style="background: white; border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); padding: 24px; border-left: 4px solid #3b82f6; margin-bottom: 24px;">
+            <h3 style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+              <span>📦</span>
+              <span>Setup Iniziale</span>
+            </h3>
+            
+            <ol style="list-style: none; padding: 0; margin: 0;">
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">1</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Scarica lo zip</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Oppure clona la repository da GitHub:</p>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; margin-top: 8px; font-size: 14px; font-family: monospace;">git clone https://github.com/username/repository-name.git</code>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">2</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Estrai e posiziona i file</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0;">Estrai lo zip e copia i contenuti nella cartella del progetto (in particolare la cartella <b>public/</b> e il file <b>tailwind.config.js</b>)</p>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">3</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Configura l'ambiente</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Modifica il file <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-size: 12px; font-family: monospace;">.env.production</code> con il nome della tua cartella/repository</p>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">4</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Installa le dipendenze</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Esegui lo script di setup per il tuo sistema operativo:</p>
+                  <div style="margin-bottom: 8px;">
+                    <div style="background: #f3f4f6; padding: 8px 12px; border-radius: 4px;">
+                      <p style="font-size: 12px; font-weight: 600; color: #6b7280; margin: 0 0 4px 0;">Windows:</p>
+                      <code style="font-size: 14px; font-family: monospace; color: #1f2937;">setup.bat</code>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="background: #f3f4f6; padding: 8px 12px; border-radius: 4px;">
+                      <p style="font-size: 12px; font-weight: 600; color: #6b7280; margin: 0 0 4px 0;">Mac/Linux:</p>
+                      <code style="font-size: 14px; font-family: monospace; color: #1f2937;">./setup.sh</code>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Sviluppo Locale -->
+          <div style="background: white; border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); padding: 24px; border-left: 4px solid #10b981; margin-bottom: 24px;">
+            <h3 style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+              <span>💻</span>
+              <span>Sviluppo Locale</span>
+            </h3>
+            
+            <div style="margin-bottom: 16px;">
+              <p style="font-weight: 600; color: #1f2937; margin: 0 0 8px 0;">Avvia il server di sviluppo:</p>
+              <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace;">npm start</code>
+              <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0 0;">L'app sarà disponibile su <span style="font-weight: 600;">porta 5173</span> (o 5174 se già occupata)</p>
+            </div>
+            
+            <div style="border-top: 1px solid #e5e7eb; padding-top: 16px;">
+              <p style="font-weight: 600; color: #1f2937; margin: 0 0 8px 0;">Testa la versione di produzione:</p>
+              <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace; margin-bottom: 8px;">npm run build</code>
+              <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace;">npm run preview</code>
+              <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0 0;">Verrà creata la cartella <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-size: 12px; font-family: monospace;">dist/</code> con i file ottimizzati</p>
+            </div>
+          </div>
+
+          <!-- Deployment -->
+          <div style="background: white; border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); padding: 24px; border-left: 4px solid #8b5cf6; margin-bottom: 24px;">
+            <h3 style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+              <span>🚀</span>
+              <span>Deployment su GitHub Pages</span>
+            </h3>
+            
+            <ol style="list-style: none; padding: 0; margin: 0;">
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">1</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Configura il repository remoto</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Imposta l'origin dalla tua repository GitHub:</p>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace;">git remote add origin https://github.com/username/repository-name.git</code>
+                  <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 4px; padding: 12px; margin-top: 12px;">
+                    <p style="color: #92400e; font-size: 14px; margin: 0; display: flex; align-items: start; gap: 8px;">
+                      <span style="font-size: 18px;">⚠️</span>
+                      <span><strong>Importante:</strong> Il nome della repository deve essere lo stesso dichiarato in <code style="background: #fde68a; padding: 1px 4px; border-radius: 4px;">.env.production</code></span>
+                    </p>
+                  </div>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">2</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Rendi pubblica la repository</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0;">Nelle impostazioni di GitHub, imposta la repository su <span style="font-weight: 600;">Public</span> per abilitare GitHub Pages</p>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">3</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Primo commit</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Carica tutti i contenuti dell'app sul branch main:</p>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace; margin-bottom: 8px;">git add .</code>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace; margin-bottom: 8px;">git commit -m "Initial commit"</code>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace;">git push -u origin main</code>
+                  <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0 0;">Il <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-size: 12px; font-family: monospace;">.gitignore</code> esclude automaticamente <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-size: 12px; font-family: monospace;">node_modules/</code> e <code style="background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-size: 12px; font-family: monospace;">dist/</code></p>
+                </div>
+              </li>
+              
+              <li style="display: flex; gap: 12px;">
+                <span style="flex-shrink: 0; width: 24px; height: 24px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">4</span>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #1f2937; margin: 0 0 4px 0;">Deploy automatico</p>
+                  <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px 0;">Esegui il comando di deployment:</p>
+                  <code style="display: block; background: #f3f4f6; color: #1f2937; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-family: monospace;">npm run deploy</code>
+                  <div style="background: #d1fae5; border: 1px solid #a7f3d0; border-radius: 4px; padding: 12px; margin-top: 12px;">
+                    <p style="color: #065f46; font-size: 14px; margin: 0; display: flex; align-items: start; gap: 8px;">
+                      <span style="font-size: 18px;">✅</span>
+                      <span>Verrà creato automaticamente un branch <code style="background: #a7f3d0; padding: 1px 4px; border-radius: 4px;">gh-pages</code> con la versione ottimizzata dalla cartella <code style="background: #a7f3d0; padding: 1px 4px; border-radius: 4px;">dist/</code></span>
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+        </div>
+        
         <div class="alert alert-success">
           <strong>✅ Tutto pronto!</strong> Clicca sul pulsante per scaricare il tuo progetto.
         </div>
         
         <div class="buttons">
-          <button class="btn-secondary" onclick="window.uiManager.prevStep(7)">← Indietro</button>
+          <button class="btn-secondary" onclick="window.uiManager.prevStep(8)">← Indietro</button>
           <button class="btn-success" id="downloadZip">🎉 Scarica ZIP</button>
         </div>
       </div>
+
     </div>
-  </div>
+  </div>
+
+
+
   <script>
     // Initialize previews when entering steps
     document.addEventListener('DOMContentLoaded', () => {
@@ -501,5 +896,6 @@
       observer6.observe(step6, { attributes: true, attributeFilter: ['class'] });
     });
   </script>
+
 </body>
 </html>
